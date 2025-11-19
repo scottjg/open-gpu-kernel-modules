@@ -99,7 +99,7 @@ CHIPSET_SETUP_FUNC(PLDA_XpressRichAXI_setupFunc)
 CHIPSET_SETUP_FUNC(Riscv_generic_setupFunc)
 CHIPSET_SETUP_FUNC(Intel_A70D_setupFunc)
 CHIPSET_SETUP_FUNC(AMD_14D8_setupFunc)
-
+CHIPSET_SETUP_FUNC(Generic_setupFunc)
 
 // Keep string length <=32 (including termination) to avoid string copy overflow
 CSINFO chipsetInfo[] =
@@ -316,7 +316,7 @@ CSINFO chipsetInfo[] =
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     // last element must have chipset CS_UNKNOWN (zero)
-    {0,                         0,      CS_UNKNOWN,         "Unknown",      NULL}
+    {0,                         0,      CS_UNKNOWN,         "Unknown",      Generic_setupFunc}
 };
 
 
