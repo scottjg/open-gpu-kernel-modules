@@ -2526,6 +2526,19 @@ compile_test() {
             compile_check_conftest "$CODE" "NV_PM_DOMAIN_AVAILABLE" "" "functions"
         ;;
 
+        dev_is_dma_coherent)
+            #
+            # Determine whether dev_is_dma_coherent() exists.
+            #
+            CODE="
+            #include <linux/dma-map-ops.h>
+            void conftest_dev_is_dma_coherent(void) {
+                dev_is_dma_coherent();
+            }"
+
+            compile_check_conftest "$CODE" "NV_DEV_IS_DMA_COHERENT_PRESENT" "" "functions"
+        ;;
+
         cmd_uphy_display_port_init)
             #
             # Determine if CMD_UPHY_DISPLAY_PORT_INIT enum present in bpmp-abi header
