@@ -984,6 +984,8 @@ void*      NV_API_CALL  nv_dma_get_dev_pagemap   (NvU64);
 void       NV_API_CALL  nv_dma_put_dev_pagemap   (void *);
 NvBool     NV_API_CALL  nv_grdma_pci_topology_supported(nv_state_t *, nv_dma_device_t *);
 
+NvBool     NV_API_CALL  nv_dev_is_dma_coherent   (nv_dma_device_t *);
+
 NvS32  NV_API_CALL  nv_start_rc_timer            (nv_state_t *);
 NvS32  NV_API_CALL  nv_stop_rc_timer             (nv_state_t *);
 
