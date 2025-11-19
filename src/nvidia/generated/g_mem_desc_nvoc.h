@@ -1491,7 +1491,6 @@ void memdescOverridePhysicalAddressWidthWindowsWAR(OBJGPU *pGpu, MEMORY_DESCRIPT
 
 // cache maintenance functions
 void memdescFlushGpuCaches(OBJGPU *pGpu, MEMORY_DESCRIPTOR *pMemDesc);
-void memdescFlushCpuCaches(OBJGPU *pGpu, MEMORY_DESCRIPTOR *pMemDesc);
 
 // Map memory descriptor for RM internal access
 void* memdescMapInternal(OBJGPU *pGpu, MEMORY_DESCRIPTOR *pMemDesc, NvU32 flags);
