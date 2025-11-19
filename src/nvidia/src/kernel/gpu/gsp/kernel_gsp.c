@@ -3166,7 +3166,7 @@ _setupLogBufferVgpu
                         pGpu,
                         logVgpuSetupParams.bufSize,
                         RM_PAGE_SIZE,
-                        NV_TRUE, ADDR_FBMEM, NV_MEMORY_CACHED,
+                        NV_TRUE, ADDR_FBMEM, NV_MEMORY_DEFAULT,
                         MEMDESC_FLAGS_NONE),
         exit);
 
@@ -3458,7 +3458,7 @@ _setupLogBufferBaremetal
                         pGpu,
                         size,
                         RM_PAGE_SIZE,
-                        NV_TRUE, ADDR_SYSMEM, NV_MEMORY_CACHED,
+                        NV_TRUE, ADDR_SYSMEM, NV_MEMORY_DEFAULT,
                         flags),
         exit);
 
@@ -4168,7 +4168,7 @@ _kgspSetupTaskRmInstrumentationStructure (
                         pGpu,
                         BULLSEYE_GSP_RM_COVERAGE_SIZE,
                         RM_PAGE_SIZE,
-                        NV_TRUE, ADDR_SYSMEM, NV_MEMORY_CACHED,
+                        NV_TRUE, ADDR_SYSMEM, NV_MEMORY_DEFAULT,
                         MEMDESC_FLAGS_NONE), done);
 
     memdescTagAlloc(nvStatus,
@@ -5448,7 +5448,7 @@ kgspPrepareBootBinaryImage_IMPL
                                 pGpu,
                                 bufSizeAligned,
                                 RM_PAGE_SIZE,
-                                NV_TRUE, ADDR_SYSMEM, NV_MEMORY_CACHED,
+                                NV_TRUE, ADDR_SYSMEM, NV_MEMORY_DEFAULT,
                                 flags),
                         fail);
 
@@ -5533,7 +5533,7 @@ _kgspCreateSignatureMemdesc
     NV_CHECK_OK_OR_RETURN(LEVEL_ERROR,
         memdescCreate(&pKernelGsp->pSignatureMemdesc, pGpu,
             NV_ALIGN_UP(pGspFw->signatureSize, 256), 256,
-            NV_TRUE, ADDR_SYSMEM, NV_MEMORY_CACHED, flags));
+            NV_TRUE, ADDR_SYSMEM, NV_MEMORY_DEFAULT, flags));
 
     memdescTagAlloc(status,
             NV_FB_ALLOC_RM_INTERNAL_OWNER_UNNAMED_TAG_16, pKernelGsp->pSignatureMemdesc);
@@ -5821,7 +5821,7 @@ kgspCreateRadix3_IMPL
             LIBOS_MEMORY_REGION_RADIX_PAGE_SIZE,
             NV_MEMORY_NONCONTIGUOUS,
             ADDR_SYSMEM,
-            NV_MEMORY_CACHED,
+            NV_MEMORY_DEFAULT,
             flags),
         done);
 

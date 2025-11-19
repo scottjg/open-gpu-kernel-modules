@@ -110,6 +110,7 @@
 #include <gpu/mmu/kern_gmmu.h>
 #include <gpu/subdevice/subdevice.h>
 #include <gpu_mgr/gpu_mgr.h>
+#include <kernel/gpu/bif/kernel_bif.h>
 #include <kernel/gpu/fifo/kernel_channel.h>
 #include <kernel/gpu/fifo/kernel_channel_group.h>
 #include <kernel/gpu/fifo/kernel_channel_group_api.h>
@@ -4889,12 +4890,16 @@ static NV_STATUS nvGpuOpsAllocPhysical(struct gpuDevice *device,
     NV_MEMORY_ALLOCATION_PARAMS memAllocParams = {0};
     NV_STATUS status = NV_OK;
     RM_API *pRmApi = rmapiGetInterface(RMAPI_EXTERNAL_KERNEL);
+    OBJGPU *pGpu = NULL;
 
     NvHandle physHandle  = 0;
 
     NV_ASSERT(allocInfo);
     NV_ASSERT(device);
     NV_ASSERT(paOffset);
+
+    status = _nvGpuOpsGetGpuFromDevice(device, &pGpu);
+    NV_ASSERT_OR_RETURN((status == NV_OK) && (pGpu != NULL), NV_ERR_INVALID_ARGUMENT);
 
     // then allocate the physical memory in either sysmem or fb.
     memAllocParams.owner = HEAP_OWNER_RM_KERNEL_CLIENT;
@@ -4911,9 +4916,9 @@ static NV_STATUS nvGpuOpsAllocPhysical(struct gpuDevice *device,
                                       DRF_DEF(OS32, _ATTR, _LOCATION, _PCI) :
                                       DRF_DEF(OS32, _ATTR, _LOCATION, _VIDMEM);
 
-    // Always enable caching for System Memory as all the currently supported
-    // platforms are IO coherent.
-    NvBool bCached = isSystemMemory;
+    // Set CPU caching attribute
+    KernelBif *pKernelBif = GPU_GET_KERNEL_BIF(pGpu);
+    NvBool bCached = isSystemMemory && kbifIsSnoopDmaCapable(pGpu, pKernelBif);
     memAllocParams.attr |= bCached ?
                                 DRF_DEF(OS32, _ATTR, _COHERENCY, _CACHED):
                                 DRF_DEF(OS32, _ATTR, _COHERENCY, _UNCACHED);
@@ -10564,7 +10569,7 @@ _shadowMemdescCreateFlcn(gpuRetainedChannel *retainedChannel,
         pCtxBufferInfo->alignment,
         pCtxBufferInfo->bIsContigous,
         pCtxBufferInfo->aperture,
-        NV_MEMORY_CACHED,
+        NV_MEMORY_DEFAULT,
         MEMDESC_FLAGS_NONE
     );
     NV_CHECK_OK_OR_RETURN(LEVEL_ERROR, status);
@@ -10664,7 +10669,7 @@ _shadowMemdescCreate(gpuRetainedChannel *retainedChannel,
         pCtxBufferInfo->alignment,
         pCtxBufferInfo->bIsContigous,
         pCtxBufferInfo->aperture,
-        NV_MEMORY_CACHED,
+        NV_MEMORY_DEFAULT,
         MEMDESC_FLAGS_NONE
     );
     if (status != NV_OK)
