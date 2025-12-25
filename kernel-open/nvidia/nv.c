@@ -859,6 +859,12 @@ static int __init nvidia_init_module(void)
         goto caps_imex_exit;
     }
 
+    if (PAGE_SIZE == (16 * 1024))
+    {
+        nv_printf(NV_DBG_WARNINGS,
+            "NVRM: Your kernel is running with a 16kb page size which is not supported by the NVIDIA driver. We recommend changing to a 4k kernel page size.\n");
+    }
+
     count = nvos_count_devices(&num_pci_devices, &num_platform_devices);
     if ((count == 0) && (!is_nvswitch_present))
     {
