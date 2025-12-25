@@ -1922,6 +1922,7 @@ memmgrDeterminePageSize_IMPL
     switch (pageSize)
     {
         case RM_PAGE_SIZE:
+        case RM_PAGE_SIZE_16K:
             *pRetAttr = FLD_SET_DRF(OS32, _ATTR, _PAGE_SIZE, _4KB, *pRetAttr);
             break;
 
